@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `hotel` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `hotel`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: hotel
@@ -63,7 +61,7 @@ CREATE TABLE `customer` (
   `email` varchar(50) DEFAULT NULL,
   `room` int(11) DEFAULT NULL,
   PRIMARY KEY (`cID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,6 +70,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES (1,'bob','123 fake st',123,'1@1.com',NULL),(2,'jim','124 fake st',213,'2@2.com',NULL);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +112,7 @@ DROP TABLE IF EXISTS `room`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `room` (
-  `rID` int(11) NOT NULL,
+  `rID` int(11) NOT NULL DEFAULT '100',
   `roomType` int(11) DEFAULT NULL,
   PRIMARY KEY (`rID`),
   KEY `roomType_idx` (`roomType`),
@@ -127,6 +126,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
+INSERT INTO `room` VALUES (100,1),(101,2),(103,2),(104,2),(102,3),(105,3);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -142,7 +142,7 @@ CREATE TABLE `roomtype` (
   `class` varchar(50) NOT NULL,
   `price` int(10) unsigned zerofill NOT NULL,
   PRIMARY KEY (`typeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,6 +151,7 @@ CREATE TABLE `roomtype` (
 
 LOCK TABLES `roomtype` WRITE;
 /*!40000 ALTER TABLE `roomtype` DISABLE KEYS */;
+INSERT INTO `roomtype` VALUES (1,'economy',0000000150),(2,'luxury',0000000200),(3,'middle',0000000100);
 /*!40000 ALTER TABLE `roomtype` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -163,4 +164,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-27 22:43:16
+-- Dump completed on 2016-11-28 21:40:17
