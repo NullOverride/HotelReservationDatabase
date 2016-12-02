@@ -63,9 +63,10 @@ CREATE TABLE `customer` (
   `email` varchar(50) DEFAULT NULL,
   `room` int(11) DEFAULT NULL,
   PRIMARY KEY (`cID`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `room_idx` (`room`),
   CONSTRAINT `room` FOREIGN KEY (`room`) REFERENCES `room` (`rID`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +75,6 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'bob','123 fake st',123,'1@1.com',101),(2,'jim','124 fake st',213,'2@2.com',102);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,4 +171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-01 18:47:17
+-- Dump completed on 2016-12-02  1:54:08
