@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `hotel` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `hotel`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: hotel
@@ -60,7 +62,9 @@ CREATE TABLE `customer` (
   `phone` int(11) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `room` int(11) DEFAULT NULL,
-  PRIMARY KEY (`cID`)
+  PRIMARY KEY (`cID`),
+  KEY `room_idx` (`room`),
+  CONSTRAINT `room` FOREIGN KEY (`room`) REFERENCES `room` (`rID`) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -70,7 +74,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'bob','123 fake st',123,'1@1.com',NULL),(2,'jim','124 fake st',213,'2@2.com',NULL);
+INSERT INTO `customer` VALUES (1,'bob','123 fake st',123,'1@1.com',101),(2,'jim','124 fake st',213,'2@2.com',102);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,8 +118,11 @@ DROP TABLE IF EXISTS `room`;
 CREATE TABLE `room` (
   `rID` int(11) NOT NULL DEFAULT '100',
   `roomType` int(11) DEFAULT NULL,
+  `assignedTo` int(11) DEFAULT NULL,
   PRIMARY KEY (`rID`),
   KEY `roomType_idx` (`roomType`),
+  KEY `assignedTo_idx` (`assignedTo`),
+  CONSTRAINT `assignedTo` FOREIGN KEY (`assignedTo`) REFERENCES `customer` (`cID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `roomType` FOREIGN KEY (`roomType`) REFERENCES `roomtype` (`typeID`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -126,7 +133,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
-INSERT INTO `room` VALUES (100,1),(101,2),(103,2),(104,2),(102,3),(105,3);
+INSERT INTO `room` VALUES (100,1,NULL),(101,2,NULL),(102,3,NULL),(103,2,NULL),(104,2,NULL),(105,3,NULL);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -164,4 +171,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-28 21:40:17
+-- Dump completed on 2016-12-01 18:47:17
