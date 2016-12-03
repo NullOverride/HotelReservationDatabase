@@ -35,10 +35,10 @@ public class HotelGUI {
 	private JTextField txtFakeStreet;
 	private JTextField textField;
 	private JTextField txtAacom;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField emailField;
+	private JTextField phoneField;
+	private JTextField addressField;
+	private JTextField nameField;
 
 	/**
 	 * Launch the application.
@@ -192,34 +192,34 @@ public class HotelGUI {
 			}
 		});
 		
-		textField_1 = new JTextField();
-		textField_1.setToolTipText("Email");
-		textField_1.setColumns(10);
+		emailField = new JTextField();
+		emailField.setToolTipText("Email");
+		emailField.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setToolTipText("Phone");
-		textField_2.setColumns(10);
+		phoneField = new JTextField();
+		phoneField.setToolTipText("Phone");
+		phoneField.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setToolTipText("Address");
-		textField_3.setColumns(10);
+		addressField = new JTextField();
+		addressField.setToolTipText("Address");
+		addressField.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setToolTipText("Name");
-		textField_4.setColumns(10);
+		nameField = new JTextField();
+		nameField.setToolTipText("Name");
+		nameField.setColumns(10);
 		
 		JLabel lblUpdateInfo = new JLabel("Update Info:");
 		
 		JButton btnUpdate = new JButton("Update!");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField_2 == null || textField_3 == null || textField_4 == null) {
+				if(phoneField == null || addressField == null || nameField == null) {
 					JOptionPane popup = new JOptionPane();
 					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Please fill in all of the empty spaces.");
 				} 
 				else {
 					try {
-							stmt.executeUpdate("UPDATE customer SET name='" + textField_4.getText() + "', address= '" + textField_3.getText() + "', phone= " + textField_2.getText() + " WHERE email = '" + textField_1.getText() + "'");
+							stmt.executeUpdate("UPDATE customer SET name='" + nameField.getText() + "', address= '" + addressField.getText() + "', phone= " + phoneField.getText() + " WHERE email = '" + emailField.getText() + "'");
 							table.setModel(model);
 							JOptionPane popup = new JOptionPane();
 							popup.showMessageDialog(frmHotelReservation.getContentPane(), "Successfully updated!");
@@ -235,9 +235,9 @@ public class HotelGUI {
 		});
 		
 		lblUpdateInfo.setVisible(false);
-		textField_2.setVisible(false);
-		textField_3.setVisible(false);
-		textField_4.setVisible(false);
+		phoneField.setVisible(false);
+		addressField.setVisible(false);
+		nameField.setVisible(false);
 		btnUpdate.setVisible(false);
 		
 		JLabel lblEmail = new JLabel("Email:");
@@ -245,14 +245,14 @@ public class HotelGUI {
 		JButton btnGetReservation = new JButton("Get Reservation");
 		btnGetReservation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField_1.getText() == null || textField_1.getText().length() == 0) {
+				if(emailField.getText() == null || emailField.getText().length() == 0) {
 					JOptionPane popup = new JOptionPane();
 					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Please enter an email to check your reservation.");
 				}
 				else {
 
 					try {
-						rs = stmt.executeQuery("SELECT cID, name, room FROM customer WHERE email = '" + textField_1.getText() +"'");
+						rs = stmt.executeQuery("SELECT cID, name, room FROM customer WHERE email = '" + emailField.getText() +"'");
 						if (!rs.isBeforeFirst()) {
 							JOptionPane popup = new JOptionPane();
 							popup.showMessageDialog(frmHotelReservation.getContentPane(), "Reservation Not Found.");
@@ -262,9 +262,9 @@ public class HotelGUI {
 							table.setModel(model);
 							btnCancelReservation.setEnabled(true);
 							lblUpdateInfo.setVisible(true);
-							textField_2.setVisible(true);
-							textField_3.setVisible(true);
-							textField_4.setVisible(true);
+							phoneField.setVisible(true);
+							addressField.setVisible(true);
+							nameField.setVisible(true);
 							btnUpdate.setVisible(true);
 						}
 					} catch (SQLException e1) {
@@ -334,9 +334,9 @@ public class HotelGUI {
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblUpdateInfo)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(nameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(addressField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_panel.createSequentialGroup()
@@ -348,13 +348,13 @@ public class HotelGUI {
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(btnNewButton))
 								.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-									.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(emailField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(btnGetReservation)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(btnCancelReservation))
 								.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-									.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(phoneField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(btnUpdate)))))
 					.addGap(4))
@@ -375,14 +375,14 @@ public class HotelGUI {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblEmail)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(emailField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnGetReservation)
 						.addComponent(btnCancelReservation))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(phoneField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addressField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(nameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblUpdateInfo)
 						.addComponent(btnUpdate))
 					.addPreferredGap(ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
