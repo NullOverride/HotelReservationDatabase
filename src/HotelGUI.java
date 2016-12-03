@@ -35,6 +35,10 @@ public class HotelGUI {
 	private JTextField txtFakeStreet;
 	private JTextField textField;
 	private JTextField txtAacom;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
 
 	/**
 	 * Launch the application.
@@ -187,18 +191,68 @@ public class HotelGUI {
 				btnCancelReservation.setEnabled(false);
 			}
 		});
+		
+		textField_1 = new JTextField();
+		textField_1.setToolTipText("Email");
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setToolTipText("Phone");
+		textField_2.setColumns(10);
+		
+		textField_3 = new JTextField();
+		textField_3.setToolTipText("Address");
+		textField_3.setColumns(10);
+		
+		textField_4 = new JTextField();
+		textField_4.setToolTipText("Name");
+		textField_4.setColumns(10);
+		
+		JLabel lblUpdateInfo = new JLabel("Update Info:");
+		
+		JButton btnUpdate = new JButton("Update!");
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField_2 == null || textField_3 == null || textField_4 == null) {
+					JOptionPane popup = new JOptionPane();
+					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Please fill in all of the empty spaces.");
+				} 
+				else {
+					try {
+							stmt.executeUpdate("UPDATE customer SET name='" + textField_4.getText() + "', address= '" + textField_3.getText() + "', phone= " + textField_2.getText() + " WHERE email = '" + textField_1.getText() + "'");
+							table.setModel(model);
+							JOptionPane popup = new JOptionPane();
+							popup.showMessageDialog(frmHotelReservation.getContentPane(), "Successfully updated!");
+							
+						
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+						JOptionPane popup = new JOptionPane();
+						popup.showMessageDialog(frmHotelReservation.getContentPane(), "Update failed... Check your fields.");
+					}
+				}
+			}
+		});
+		
+		lblUpdateInfo.setVisible(false);
+		textField_2.setVisible(false);
+		textField_3.setVisible(false);
+		textField_4.setVisible(false);
+		btnUpdate.setVisible(false);
+		
+		JLabel lblEmail = new JLabel("Email:");
 
 		JButton btnGetReservation = new JButton("Get Reservation");
 		btnGetReservation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(txtAacom.getText() == null || txtAacom.getText().length() == 0) {
+				if(textField_1.getText() == null || textField_1.getText().length() == 0) {
 					JOptionPane popup = new JOptionPane();
 					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Please enter an email to check your reservation.");
 				}
 				else {
 
 					try {
-						rs = stmt.executeQuery("SELECT cID, name, room FROM customer WHERE email = '" + txtAacom.getText() +"'");
+						rs = stmt.executeQuery("SELECT cID, name, room FROM customer WHERE email = '" + textField_1.getText() +"'");
 						if (!rs.isBeforeFirst()) {
 							JOptionPane popup = new JOptionPane();
 							popup.showMessageDialog(frmHotelReservation.getContentPane(), "Reservation Not Found.");
@@ -207,6 +261,11 @@ public class HotelGUI {
 							model = ListTableModel.createModelFromResultSet(rs);
 							table.setModel(model);
 							btnCancelReservation.setEnabled(true);
+							lblUpdateInfo.setVisible(true);
+							textField_2.setVisible(true);
+							textField_3.setVisible(true);
+							textField_4.setVisible(true);
+							btnUpdate.setVisible(true);
 						}
 					} catch (SQLException e1) {
 						e1.printStackTrace();
@@ -214,7 +273,6 @@ public class HotelGUI {
 				}
 			}
 		});
-
 
 
 
@@ -245,6 +303,10 @@ public class HotelGUI {
 		////////////////////////////////////////////////////
 
 		JScrollPane scrollPane = new JScrollPane();
+		
+
+		
+
 
 
 
@@ -253,50 +315,79 @@ public class HotelGUI {
 
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 1007, GroupLayout.PREFERRED_SIZE)
+			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(btnGetRooms)
-						.addGap(10)
-						.addComponent(lblAddNewCustomer)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(txtJohn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(txtFakeStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(txtAacom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnCancelReservation)
-								.addComponent(btnGetReservation)
-								.addComponent(btnNewButton))
-						.addGap(236))
-				);
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 1007, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(btnGetRooms)
+									.addGap(10)
+									.addComponent(lblAddNewCustomer)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtJohn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtFakeStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblEmail)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(lblUpdateInfo)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtAacom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnNewButton))
+								.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+									.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnGetReservation)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnCancelReservation))
+								.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+									.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnUpdate)))))
+					.addGap(4))
+		);
 		gl_panel.setVerticalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-						.addGap(16)
-						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblAddNewCustomer)
-								.addComponent(txtJohn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtFakeStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtAacom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnGetRooms)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(16)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblAddNewCustomer)
+						.addComponent(txtJohn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtFakeStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtAacom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnGetRooms)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblEmail)
+						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnGetReservation)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(btnCancelReservation)
-						.addPreferredGap(ComponentPlacement.RELATED, 251, Short.MAX_VALUE)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
-				);
+						.addComponent(btnCancelReservation))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField_3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField_4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUpdateInfo)
+						.addComponent(btnUpdate))
+					.addPreferredGap(ComponentPlacement.RELATED, 254, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
+		);
 		panel.setLayout(gl_panel);
 		scrollPane.setViewportView(table);
 
