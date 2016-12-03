@@ -76,12 +76,12 @@ CREATE TABLE `customer` (
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
 INSERT INTO `customer` VALUES 
-(null,'Albert','5234 Alphabet St',5105746574,'Alberto@gmail.com',null),
-(null,'Bilbo','8542 Baggins St',5867234876,'Bilbo@gmail.com',null),
-(null,'Carmen','95864 San Diego St',5436566574,'Carmen@gmail.com',null),
-(null,'Derrick','615 Domino St',9586734543,'Derrick@gmail.com',null),
-(null,'Edward','9653 Tenticles St',5105746574,'Edward@gmail.com',null),
-(null,'Francis','65 Bacon St',9685641029,'Francis@gmail.com',null);
+(null,'Albert','5234 Alphabet St','5105746574','Alberto@gmail.com',null),
+(null,'Bilbo','8542 Baggins St','5867234876','Bilbo@gmail.com',null),
+(null,'Carmen','95864 San Diego St','5436566574','Carmen@gmail.com',null),
+(null,'Derrick','615 Domino St','9586734543','Derrick@gmail.com',null),
+(null,'Edward','9653 Tenticles St','5105746574','Edward@gmail.com',null),
+(null,'Francis','65 Bacon St','9685641029','Francis@gmail.com',null);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +140,10 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
-INSERT INTO `room` VALUES (100,1,NULL),(101,2,NULL),(102,3,NULL),(103,2,NULL),(104,2,NULL),(105,3,NULL);
+INSERT INTO `room` VALUES (100,1,NULL),(101,1,NULL),(102,2,NULL),(103,2,NULL),(104,3,NULL),(105,3,NULL),
+(200,1,NULL),(201,1,NULL),(202,2,NULL),(203,2,NULL),(204,3,NULL),(205,3,NULL),
+(300,1,NULL),(301,1,NULL),(302,2,NULL),(303,2,NULL),(304,3,NULL),(305,3,NULL),
+(400,1,NULL),(401,1,NULL),(402,2,NULL),(403,2,NULL),(404,3,NULL),(405,3,NULL);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
