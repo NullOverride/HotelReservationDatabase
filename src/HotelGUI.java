@@ -28,13 +28,13 @@ public class HotelGUI {
 
 	private static Connection connection; 
 	private ResultSet rs;
-	private JTable table;
+	private JTable cstmrTable;
 	ListTableModel model;
-	private JTable table_1;
-	private JTextField txtJohn;
-	private JTextField txtFakeStreet;
-	private JTextField textField;
-	private JTextField txtAacom;
+	private JTable mngrTable;
+	private JTextField addName;
+	private JTextField addStreet;
+	private JTextField addPhone;
+	private JTextField addEmail;
 	private JTextField emailField;
 	private JTextField phoneField;
 	private JTextField addressField;
@@ -107,30 +107,30 @@ public class HotelGUI {
 		//Add New Customer Labels and Text Fields
 		JLabel lblAddNewCustomer = new JLabel("Add New Customer:");
 
-		txtJohn = new JTextField();
-		txtJohn.setText("John");
-		txtJohn.setToolTipText("Name");
-		txtJohn.setColumns(10);
+		addName = new JTextField();
+		addName.setText("John");
+		addName.setToolTipText("Name");
+		addName.setColumns(10);
 
-		txtFakeStreet = new JTextField();
-		txtFakeStreet.setToolTipText("Address");
-		txtFakeStreet.setText("123 Fake Street");
-		txtFakeStreet.setColumns(10);
+		addStreet = new JTextField();
+		addStreet.setToolTipText("Address");
+		addStreet.setText("123 Fake Street");
+		addStreet.setColumns(10);
 
-		textField = new JTextField();
-		textField.setToolTipText("Phone Number");
-		textField.setText("123456789");
-		textField.setColumns(10);
+		addPhone = new JTextField();
+		addPhone.setToolTipText("Phone Number");
+		addPhone.setText("123456789");
+		addPhone.setColumns(10);
 
-		txtAacom = new JTextField();
-		txtAacom.setToolTipText("Email");
-		txtAacom.setText("a@a.com");
-		txtAacom.setColumns(10);
+		addEmail = new JTextField();
+		addEmail.setToolTipText("Email");
+		addEmail.setText("a@a.com");
+		addEmail.setColumns(10);
 
 		JComboBox comboBox = new JComboBox();
 
 		//Create Table for Customer Queries
-		table = new JTable();
+		cstmrTable = new JTable();
 
 		//Buttons
 		JButton btnGetRooms = new JButton("Get open rooms");
@@ -139,7 +139,7 @@ public class HotelGUI {
 				try {
 					rs = stmt.executeQuery("SELECT rID, class, price FROM room JOIN roomtype WHERE Room.roomType = roomtype.typeID AND assignedTo IS NULL");
 					model = ListTableModel.createModelFromResultSet(rs);
-					table.setModel(model);
+					cstmrTable.setModel(model);
 					for (int i = 0; i < model.getRowCount(); i++) {
 						comboBox.addItem(model.getValueAt(i, 0)); 
 					}
@@ -157,19 +157,19 @@ public class HotelGUI {
 				} 
 				else {
 					try {
-						rs = stmt.executeQuery("SELECT email FROM customer WHERE email = '"+ txtAacom.getText() + "'");
+						rs = stmt.executeQuery("SELECT email FROM customer WHERE email = '"+ addEmail.getText() + "'");
 						if (rs.next()) {
 							JOptionPane popup = new JOptionPane();
 							popup.showMessageDialog(frmHotelReservation.getContentPane(), "Duplicate email found. Please use another email.");
 						}
 						else {
-							stmt.executeUpdate("INSERT INTO customer(name,address,phone,email,room) VALUES(" + "'" + txtJohn.getText() + "','" 
-									+ txtFakeStreet.getText() + "'," 
-									+ textField.getText() + ",'" 
-									+ txtAacom.getText() +"'," 
+							stmt.executeUpdate("INSERT INTO customer(name,address,phone,email,room) VALUES(" + "'" + addName.getText() + "','" 
+									+ addStreet.getText() + "'," 
+									+ addPhone.getText() + ",'" 
+									+ addEmail.getText() +"'," 
 									+ comboBox.getSelectedItem() + ")"  
 									);
-							table.setModel(model);
+							cstmrTable.setModel(model);
 						}
 					} catch (SQLException e1) {
 						e1.printStackTrace();
@@ -183,11 +183,11 @@ public class HotelGUI {
 		btnCancelReservation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					stmt.executeUpdate("DELETE FROM customer WHERE email = '"+ txtAacom.getText() + "'");
+					stmt.executeUpdate("DELETE FROM customer WHERE email = '"+ addEmail.getText() + "'");
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
-				table.setModel(model);
+				cstmrTable.setModel(model);
 				btnCancelReservation.setEnabled(false);
 			}
 		});
@@ -220,7 +220,7 @@ public class HotelGUI {
 				else {
 					try {
 							stmt.executeUpdate("UPDATE customer SET name='" + nameField.getText() + "', address= '" + addressField.getText() + "', phone= " + phoneField.getText() + " WHERE email = '" + emailField.getText() + "'");
-							table.setModel(model);
+							cstmrTable.setModel(model);
 							JOptionPane popup = new JOptionPane();
 							popup.showMessageDialog(frmHotelReservation.getContentPane(), "Successfully updated!");
 							
@@ -259,7 +259,7 @@ public class HotelGUI {
 						}
 						else {
 							model = ListTableModel.createModelFromResultSet(rs);
-							table.setModel(model);
+							cstmrTable.setModel(model);
 							btnCancelReservation.setEnabled(true);
 							lblUpdateInfo.setVisible(true);
 							phoneField.setVisible(true);
@@ -280,8 +280,8 @@ public class HotelGUI {
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Manager", null, panel_1, null);
 
-		//Create table for manager queries
-		table_1 = new JTable();
+		//Create cstmrTable for manager queries
+		mngrTable = new JTable();
 
 
 		JButton button_1 = new JButton("Get Customer Requests");
@@ -290,7 +290,7 @@ public class HotelGUI {
 				try {
 					rs = stmt.executeQuery("SELECT cID, name, room FROM customer WHERE room IS NOT NULL ORDER BY cID ASC");
 					model = ListTableModel.createModelFromResultSet(rs);
-					table_1.setModel(model);
+					mngrTable.setModel(model);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
@@ -327,9 +327,9 @@ public class HotelGUI {
 									.addGap(10)
 									.addComponent(lblAddNewCustomer)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtJohn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(addName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtFakeStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+									.addComponent(addStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 								.addComponent(lblEmail)
 								.addGroup(gl_panel.createSequentialGroup()
 									.addComponent(lblUpdateInfo)
@@ -340,9 +340,9 @@ public class HotelGUI {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(addPhone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtAacom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(addEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
@@ -365,10 +365,10 @@ public class HotelGUI {
 					.addGap(16)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblAddNewCustomer)
-						.addComponent(txtJohn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtFakeStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(txtAacom, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addStreet, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addPhone, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addEmail, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnGetRooms)
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE))
@@ -389,7 +389,7 @@ public class HotelGUI {
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
 		);
 		panel.setLayout(gl_panel);
-		scrollPane.setViewportView(table);
+		scrollPane.setViewportView(cstmrTable);
 
 
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -410,7 +410,7 @@ public class HotelGUI {
 						.addPreferredGap(ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
 						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
 				);
-		scrollPane_1.setViewportView(table_1);
+		scrollPane_1.setViewportView(mngrTable);
 		panel_1.setLayout(gl_panel_1);
 
 	}
