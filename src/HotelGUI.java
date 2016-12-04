@@ -358,7 +358,7 @@ public class HotelGUI {
 					}
 				} catch (SQLException e1) {
 					JOptionPane popup = new JOptionPane();
-					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Update failed.");
+					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Update failed.\nCustomer has already been assigned a room.");
 					e1.printStackTrace();
 				}
 			}
