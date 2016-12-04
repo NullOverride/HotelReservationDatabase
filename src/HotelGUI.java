@@ -292,10 +292,10 @@ public class HotelGUI {
 
 		textField = new JTextField();
 		textField.setColumns(10);
-		JComboBox comboBox_2 = new JComboBox();
-		comboBox_2.addItem("CREDIT");
-		comboBox_2.addItem("DEBIT");
-		comboBox_2.setVisible(false);
+		JComboBox chargeType = new JComboBox();
+		chargeType.addItem("CREDIT");
+		chargeType.addItem("DEBIT");
+		chargeType.setVisible(false);
 
 		JButton btnPay = new JButton("Pay!");
 		btnPay.addActionListener(new ActionListener() {
@@ -306,7 +306,7 @@ public class HotelGUI {
 						JOptionPane popup = new JOptionPane();
 						popup.showMessageDialog(frmHotelReservation.getContentPane(), "cID not found.");
 					} else {
-						stmt.executeUpdate("UPDATE invoice SET closeDate = CURDATE(), chargeType = '" + comboBox_2.getSelectedItem() + "', paid = 1, updatedAt = NOW();");
+						stmt.executeUpdate("UPDATE invoice SET closeDate = CURDATE(), chargeType = '" + chargeType.getSelectedItem() + "', paid = 1, updatedAt = NOW();");
 						JOptionPane popup = new JOptionPane();
 						popup.showMessageDialog(frmHotelReservation.getContentPane(), "Successfully paid!");
 						
@@ -329,7 +329,7 @@ public class HotelGUI {
 					} else {
 						model = ListTableModel.createModelFromResultSet(rs);
 						cstmrTable.setModel(model);
-						comboBox_2.setVisible(true);
+						chargeType.setVisible(true);
 						btnPay.setVisible(true);
 					}
 				} catch (SQLException e1) {
@@ -594,7 +594,7 @@ public class HotelGUI {
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(btnGetInvoice)
 						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(chargeType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(btnPay)
 						.addContainerGap(675, Short.MAX_VALUE))
@@ -634,7 +634,7 @@ public class HotelGUI {
 								.addComponent(lblCid)
 								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(btnGetInvoice)
-								.addComponent(comboBox_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(chargeType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(btnPay))
 						.addPreferredGap(ComponentPlacement.RELATED, 178, Short.MAX_VALUE)
 						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
