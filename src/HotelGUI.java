@@ -42,6 +42,7 @@ public class HotelGUI {
 	private JTextField nameField;
 	private JTextField currentCID;
 	private JTextField roomNumber;
+	private JTextField dateField;
 
 	/**
 	 * Launch the application.
@@ -522,6 +523,28 @@ public class HotelGUI {
 				}
 			}
 		});
+		
+		JLabel lblDateddmmyyyy = new JLabel("Date (yyyy-mm-dd):");
+		
+		dateField = new JTextField();
+		dateField.setColumns(10);
+		
+		JButton btnArchivePaidCustomers = new JButton("Archive Paid Customers");
+		btnArchivePaidCustomers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					stmt.execute("CALL archive('"+ dateField.getText() +"');");
+					JOptionPane popup = new JOptionPane();
+					popup.showMessageDialog(frmHotelReservation.getContentPane(), "All paid invoices before " + dateField.getText() + " have been archived.");
+				} catch (SQLException e1) {
+					JOptionPane popup = new JOptionPane();
+					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Archived failed (invalid date?)");
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+
 
 
 		////////////////////////////////////////////////////
@@ -645,75 +668,80 @@ public class HotelGUI {
 
 		JScrollPane scrollPane_1 = new JScrollPane();
 
-
-
-
-
-
 		GroupLayout gl_panel_1 = new GroupLayout(managerPanel);
 		gl_panel_1.setHorizontalGroup(
-				gl_panel_1.createParallelGroup(Alignment.LEADING)
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel_1.createSequentialGroup()
-										.addGap(10)
-										.addComponent(getCustomerRequests, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(currentRequests, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnAssignRoom)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnDeleteRequest))
-								.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 1005, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_panel_1.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(btnGetBookedRooms)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnGetOf)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnCountCustomersGroup))
-								.addGroup(gl_panel_1.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(lblRoomNumber)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(roomNumber, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(classType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnAddRoom)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(btnDeleteRoom))
-								.addGroup(gl_panel_1.createSequentialGroup()
-										.addContainerGap()
-										.addComponent(btnGetPaidCustomers)))
-						.addContainerGap(2, Short.MAX_VALUE))
-				);
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(10)
+							.addComponent(getCustomerRequests, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(currentRequests, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAssignRoom)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnDeleteRequest))
+						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 1005, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(btnGetBookedRooms)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnGetOf)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnCountCustomersGroup))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblRoomNumber)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(roomNumber, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(classType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnAddRoom)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnDeleteRoom))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(btnGetPaidCustomers)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblDateddmmyyyy)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnArchivePaidCustomers)))
+					.addContainerGap(2, Short.MAX_VALUE))
+		);
 		gl_panel_1.setVerticalGroup(
-				gl_panel_1.createParallelGroup(Alignment.LEADING)
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(getCustomerRequests)
-								.addComponent(currentRequests, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnAssignRoom)
-								.addComponent(btnDeleteRequest))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnGetBookedRooms)
-								.addComponent(btnGetOf)
-								.addComponent(btnCountCustomersGroup))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblRoomNumber)
-								.addComponent(roomNumber, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(classType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnAddRoom)
-								.addComponent(btnDeleteRoom))
-						.addPreferredGap(ComponentPlacement.RELATED)
+					.addContainerGap()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(getCustomerRequests)
+						.addComponent(currentRequests, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAssignRoom)
+						.addComponent(btnDeleteRequest))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnGetBookedRooms)
+						.addComponent(btnGetOf)
+						.addComponent(btnCountCustomersGroup))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblRoomNumber)
+						.addComponent(roomNumber, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(classType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAddRoom)
+						.addComponent(btnDeleteRoom))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnGetPaidCustomers)
-						.addPreferredGap(ComponentPlacement.RELATED, 222, Short.MAX_VALUE)
-						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
-				);
+						.addComponent(lblDateddmmyyyy)
+						.addComponent(dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnArchivePaidCustomers))
+					.addPreferredGap(ComponentPlacement.RELATED, 222, Short.MAX_VALUE)
+					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
+		);
 		scrollPane_1.setViewportView(mngrTable);
 		managerPanel.setLayout(gl_panel_1);
 
