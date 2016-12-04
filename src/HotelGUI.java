@@ -434,7 +434,7 @@ public class HotelGUI {
 			}
 		});
 
-		JButton btnCountCustomersGroup = new JButton("Count customers group by room type having more than 2 rooms");
+		JButton btnCountCustomersGroup = new JButton("Show room tpyes with 3 or more occupied rooms");
 		btnCountCustomersGroup.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
