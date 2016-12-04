@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `hotel` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `hotel`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.16, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: hotel
+-- Host: localhost    Database: hotel
 -- ------------------------------------------------------
--- Server version	5.5.49-log
+-- Server version	5.7.15-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -36,7 +36,7 @@ CREATE TABLE `booking` (
   KEY `rID_idx` (`rID`),
   CONSTRAINT `cID` FOREIGN KEY (`cID`) REFERENCES `customer` (`cID`) ON DELETE CASCADE ON UPDATE NO ACTION,
   CONSTRAINT `rID` FOREIGN KEY (`rID`) REFERENCES `room` (`rID`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,8 +45,27 @@ CREATE TABLE `booking` (
 
 LOCK TABLES `booking` WRITE;
 /*!40000 ALTER TABLE `booking` DISABLE KEYS */;
+INSERT INTO `booking` VALUES (22,36,100,'2016-12-03','2016-12-10',7),(23,37,101,'2016-12-03','2016-12-10',7),(24,39,100,'2016-12-03','2016-12-10',7),(25,40,402,'2016-12-03','2016-12-10',7),(26,41,303,'2016-12-03','2016-12-10',7),(27,42,303,'2016-12-03','2016-12-10',7),(28,43,205,'2016-12-03','2016-12-10',7);
 /*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `hotel`.`booking_AFTER_INSERT` AFTER INSERT ON `booking` FOR EACH ROW
+BEGIN
+insert into invoice(cID, balance, openDate, paid, updatedAt) values (NEW.cID, datediff(NEW.endDate,NEW.startDate) * (SELECT price FROM room JOIN roomtype WHERE room.rID = NEW.rID AND room.roomType = roomtype.typeID), CURDATE(), 0,  NOW());
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `customer`
@@ -66,7 +85,7 @@ CREATE TABLE `customer` (
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `room_idx` (`room`),
   CONSTRAINT `room` FOREIGN KEY (`room`) REFERENCES `room` (`rID`) ON DELETE SET NULL ON UPDATE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,6 +94,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
+INSERT INTO `customer` VALUES (36,'Doge','1343 Meme St',1234567123,'Doge@gmail.com',100),(37,'Amy','1343 Wong St',1234323421,'Amy@gmail.com',101),(38,'John','4123 Wayne Street',654456789,'John@gmail.com',201),(39,'Billy','5654 Willy Street',1989873445,'Billy@gmail.com',100),(40,'Max','98 Amillion',2045678129,'max@gmail.com',402),(41,'Mandy','4123 Handy Street',1345464789,'Mandy@gmail.com',303),(42,'Randy','4123 Handy Street',1945464789,'Randy@gmail.com',303),(43,'Po','423 Handy Street',1465464789,'Po@gmail.com',205);
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +117,7 @@ CREATE TABLE `invoice` (
   PRIMARY KEY (`invID`),
   KEY `custID_idx` (`cID`),
   CONSTRAINT `custID` FOREIGN KEY (`cID`) REFERENCES `customer` (`cID`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,6 +126,7 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+INSERT INTO `invoice` VALUES (17,36,00001050.00,'2016-12-03','2016-12-03','DEBIT',001,'2016-12-04 05:07:05'),(18,37,00001050.00,'2016-12-03','2016-12-03','DEBIT',001,'2016-12-04 05:07:05'),(19,39,00001050.00,'2016-12-03','2016-12-03','DEBIT',001,'2016-12-04 05:07:05'),(20,40,00001400.00,'2016-12-03','2016-12-03','DEBIT',001,'2016-12-04 05:07:05'),(21,41,00001400.00,'2016-12-03','2016-12-03','DEBIT',001,'2016-12-04 05:07:05'),(22,42,00001400.00,'2016-12-03','2016-12-03','DEBIT',001,'2016-12-04 05:07:05'),(23,43,00000700.00,'2016-12-03','2016-12-03','DEBIT',001,'2016-12-04 05:07:05');
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,8 +184,29 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
+INSERT INTO `room` VALUES (100,1,39),(101,1,37),(102,2,NULL),(103,2,NULL),(104,3,NULL),(105,3,NULL),(200,1,NULL),(201,1,NULL),(202,2,NULL),(203,2,NULL),(204,3,NULL),(205,3,43),(300,1,NULL),(301,1,NULL),(302,2,NULL),(303,2,42),(304,3,NULL),(305,3,NULL),(400,1,NULL),(401,1,NULL),(402,2,40),(403,2,NULL),(404,3,NULL),(405,3,NULL);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `hotel`.`room_AFTER_UPDATE` AFTER UPDATE ON `room` FOR EACH ROW
+BEGIN
+IF (NEW.assignedTo IS NOT NULL) THEN
+insert into booking(cID, rID, startDate, endDate, totalDays) values (NEW.assignedTo, NEW.rID, CURDATE(), CURDATE() + INTERVAL 7 DAY, 7);
+END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `roomtype`
@@ -190,6 +232,10 @@ LOCK TABLES `roomtype` WRITE;
 INSERT INTO `roomtype` VALUES (1,'economy',0000000150),(2,'luxury',0000000200),(3,'middle',0000000100);
 /*!40000 ALTER TABLE `roomtype` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'hotel'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -200,4 +246,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-03 19:46:57
+-- Dump completed on 2016-12-03 21:14:02
