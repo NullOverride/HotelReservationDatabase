@@ -306,7 +306,7 @@ public class HotelGUI {
 						JOptionPane popup = new JOptionPane();
 						popup.showMessageDialog(frmHotelReservation.getContentPane(), "cID not found.");
 					} else {
-						stmt.executeUpdate("UPDATE invoice SET closeDate = CURDATE(), chargeType = '" + chargeType.getSelectedItem() + "', paid = 1, updatedAt = NOW();");
+						stmt.executeUpdate("UPDATE invoice SET closeDate = CURDATE(), chargeType = '" + chargeType.getSelectedItem() + "', paid = 1, updatedAt = NOW() where cID = '" + currentCID.getText() + "';");
 						JOptionPane popup = new JOptionPane();
 						popup.showMessageDialog(frmHotelReservation.getContentPane(), "Successfully paid!");
 						
