@@ -300,6 +300,20 @@ public class HotelGUI {
 		JButton btnPay = new JButton("Pay!");
 		btnPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					rs = stmt.executeQuery("SELECT cID, balance from invoice WHERE cID = " + textField.getText() + " AND paid = 0");
+					if (!rs.isBeforeFirst()) {
+						JOptionPane popup = new JOptionPane();
+						popup.showMessageDialog(frmHotelReservation.getContentPane(), "cID not found.");
+					} else {
+						stmt.executeUpdate("UPDATE invoice SET closeDate = CURDATE(), chargeType = '" + comboBox_2.getSelectedItem() + "', paid = 1, updatedAt = NOW();");
+						JOptionPane popup = new JOptionPane();
+						popup.showMessageDialog(frmHotelReservation.getContentPane(), "Successfully paid!");
+						
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnPay.setVisible(false);
@@ -378,7 +392,7 @@ public class HotelGUI {
 					btnDeleteRequest.setEnabled(false);
 				} catch (SQLException e1) {
 					JOptionPane popup = new JOptionPane();
-					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Delete failed.");
+					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Delete failed. Customer may be already assigned to a room.");
 					e1.printStackTrace();
 				}
 			}
