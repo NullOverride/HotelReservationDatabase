@@ -40,7 +40,7 @@ public class HotelGUI {
 	private JTextField phoneField;
 	private JTextField addressField;
 	private JTextField nameField;
-	private JTextField textField;
+	private JTextField currentCID;
 	private JTextField roomNumber;
 
 	/**
@@ -290,8 +290,8 @@ public class HotelGUI {
 		JLabel lblAcceptedCustomer = new JLabel("Accepted Customer");
 		JLabel lblCid = new JLabel("cID:");
 
-		textField = new JTextField();
-		textField.setColumns(10);
+		currentCID = new JTextField();
+		currentCID.setColumns(10);
 		JComboBox chargeType = new JComboBox();
 		chargeType.addItem("CREDIT");
 		chargeType.addItem("DEBIT");
@@ -301,7 +301,7 @@ public class HotelGUI {
 		btnPay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					rs = stmt.executeQuery("SELECT cID, balance from invoice WHERE cID = " + textField.getText() + " AND paid = 0");
+					rs = stmt.executeQuery("SELECT cID, balance from invoice WHERE cID = " + currentCID.getText() + " AND paid = 0");
 					if (!rs.isBeforeFirst()) {
 						JOptionPane popup = new JOptionPane();
 						popup.showMessageDialog(frmHotelReservation.getContentPane(), "cID not found.");
@@ -322,7 +322,7 @@ public class HotelGUI {
 		btnGetInvoice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					rs = stmt.executeQuery("SELECT cID, balance from invoice WHERE cID = " + textField.getText() + " AND paid = 0");
+					rs = stmt.executeQuery("SELECT cID, balance from invoice WHERE cID = " + currentCID.getText() + " AND paid = 0");
 					if (!rs.isBeforeFirst()) {
 						JOptionPane popup = new JOptionPane();
 						popup.showMessageDialog(frmHotelReservation.getContentPane(), "cID not found.");
@@ -342,28 +342,28 @@ public class HotelGUI {
 
 
 		//MANAGER TAB
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Manager", null, panel_1, null);
+		JPanel managerPanel = new JPanel();
+		tabbedPane.addTab("Manager", null, managerPanel, null);
 
 		//Create cstmrTable for manager queries
 		mngrTable = new JTable();
 
-		JComboBox comboBox_1 = new JComboBox();
+		JComboBox currentRequests = new JComboBox();
 		JButton btnAssignRoom = new JButton("Assign Room");
 		JButton btnDeleteRequest = new JButton("Delete Request");
 		btnAssignRoom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					rs = stmt.executeQuery("SELECT cID, rID FROM booking WHERE cID = " + comboBox_1.getSelectedItem().toString().substring(5, comboBox_1.getSelectedItem().toString().indexOf(" |")) 
-							+ " AND rID = " + comboBox_1.getSelectedItem().toString().substring(comboBox_1.getSelectedItem().toString().indexOf("Room ") + 5) );
+					rs = stmt.executeQuery("SELECT cID, rID FROM booking WHERE cID = " + currentRequests.getSelectedItem().toString().substring(5, currentRequests.getSelectedItem().toString().indexOf(" |")) 
+							+ " AND rID = " + currentRequests.getSelectedItem().toString().substring(currentRequests.getSelectedItem().toString().indexOf("Room ") + 5) );
 					if (rs.next())
 					{
 						JOptionPane popup = new JOptionPane();
 						popup.showMessageDialog(frmHotelReservation.getContentPane(), "Booking already exists.");
 					} else {
 
-						stmt.executeUpdate("UPDATE room SET assignedTo = " + comboBox_1.getSelectedItem().toString().substring(5, comboBox_1.getSelectedItem().toString().indexOf(" |")) 
-								+ " WHERE rID = " + comboBox_1.getSelectedItem().toString().substring(comboBox_1.getSelectedItem().toString().indexOf("Room ") + 5) );
+						stmt.executeUpdate("UPDATE room SET assignedTo = " + currentRequests.getSelectedItem().toString().substring(5, currentRequests.getSelectedItem().toString().indexOf(" |")) 
+								+ " WHERE rID = " + currentRequests.getSelectedItem().toString().substring(currentRequests.getSelectedItem().toString().indexOf("Room ") + 5) );
 
 						JOptionPane popup = new JOptionPane();
 						popup.showMessageDialog(frmHotelReservation.getContentPane(), "Successfully updated!");
@@ -383,8 +383,8 @@ public class HotelGUI {
 		btnDeleteRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					stmt.executeUpdate("DELETE FROM customer WHERE cID = " + comboBox_1.getSelectedItem().toString().substring(5, comboBox_1.getSelectedItem().toString().indexOf(" |")) 
-							+ " AND room = " + comboBox_1.getSelectedItem().toString().substring(comboBox_1.getSelectedItem().toString().indexOf("Room ") + 5) );
+					stmt.executeUpdate("DELETE FROM customer WHERE cID = " + currentRequests.getSelectedItem().toString().substring(5, currentRequests.getSelectedItem().toString().indexOf(" |")) 
+							+ " AND room = " + currentRequests.getSelectedItem().toString().substring(currentRequests.getSelectedItem().toString().indexOf("Room ") + 5) );
 
 					JOptionPane popup = new JOptionPane();
 					popup.showMessageDialog(frmHotelReservation.getContentPane(), "Successfully deleted!");
@@ -398,8 +398,8 @@ public class HotelGUI {
 			}
 		});
 
-		JButton button_1 = new JButton("Get Customer Requests");
-		button_1.addActionListener(new ActionListener() {
+		JButton getCustomerRequests = new JButton("Get Customer Requests");
+		getCustomerRequests.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					rs = stmt.executeQuery("SELECT cID, name, room FROM customer WHERE room IS NOT NULL ORDER BY cID ASC");
@@ -411,9 +411,9 @@ public class HotelGUI {
 						mngrTable.setModel(model);
 						btnAssignRoom.setEnabled(true);
 						btnDeleteRequest.setEnabled(true);
-						comboBox_1.removeAllItems();
+						currentRequests.removeAllItems();
 						for (int i = 0; i < model.getRowCount(); i++) {
-							comboBox_1.addItem("CID: " + model.getValueAt(i, 0).toString() + " | " + model.getValueAt(i, 1).toString() + " - Room " + model.getValueAt(i, 2).toString()); 
+							currentRequests.addItem("CID: " + model.getValueAt(i, 0).toString() + " | " + model.getValueAt(i, 1).toString() + " - Room " + model.getValueAt(i, 2).toString()); 
 						}
 					}
 				} catch (SQLException e1) {
@@ -590,7 +590,7 @@ public class HotelGUI {
 						.addContainerGap()
 						.addComponent(lblCid)
 						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(currentCID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(btnGetInvoice)
 						.addPreferredGap(ComponentPlacement.RELATED)
@@ -632,7 +632,7 @@ public class HotelGUI {
 						.addPreferredGap(ComponentPlacement.UNRELATED)
 						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblCid)
-								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(currentCID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(btnGetInvoice)
 								.addComponent(chargeType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(btnPay))
@@ -650,16 +650,16 @@ public class HotelGUI {
 
 
 
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		GroupLayout gl_panel_1 = new GroupLayout(managerPanel);
 		gl_panel_1.setHorizontalGroup(
 				gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
 						.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panel_1.createSequentialGroup()
 										.addGap(10)
-										.addComponent(button_1, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE)
+										.addComponent(getCustomerRequests, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(currentRequests, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 										.addPreferredGap(ComponentPlacement.RELATED)
 										.addComponent(btnAssignRoom)
 										.addPreferredGap(ComponentPlacement.RELATED)
@@ -693,8 +693,8 @@ public class HotelGUI {
 				.addGroup(gl_panel_1.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-								.addComponent(button_1)
-								.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(getCustomerRequests)
+								.addComponent(currentRequests, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(btnAssignRoom)
 								.addComponent(btnDeleteRequest))
 						.addPreferredGap(ComponentPlacement.RELATED)
@@ -715,7 +715,7 @@ public class HotelGUI {
 						.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
 				);
 		scrollPane_1.setViewportView(mngrTable);
-		panel_1.setLayout(gl_panel_1);
+		managerPanel.setLayout(gl_panel_1);
 
 	}
 }
