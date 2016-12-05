@@ -190,14 +190,17 @@ public class HotelGUI {
 
 		phoneField = new JTextField();
 		phoneField.setToolTipText("Phone");
+		phoneField.setText("Phone");
 		phoneField.setColumns(10);
 
 		addressField = new JTextField();
 		addressField.setToolTipText("Address");
+		addressField.setText("Address");
 		addressField.setColumns(10);
 
 		nameField = new JTextField();
 		nameField.setToolTipText("Name");
+		nameField.setText("Name");
 		nameField.setColumns(10);
 
 
