@@ -78,7 +78,7 @@ CREATE TABLE `customer` (
   `cID` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `address` varchar(50) DEFAULT NULL,
-  `phone` int(11) DEFAULT NULL,
+  `phone` bigint(10) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `room` int(11) DEFAULT NULL,
   PRIMARY KEY (`cID`),
