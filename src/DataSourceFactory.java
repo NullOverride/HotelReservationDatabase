@@ -7,6 +7,7 @@ public class DataSourceFactory {
         
         MysqlDataSource mysqlDS = null;
         mysqlDS = new MysqlDataSource();
+        mysqlDS.setURL("jdbc:mysql://localhost:3306/hotel");
         mysqlDS.setUser(uName);
         mysqlDS.setPassword(pw);
         return mysqlDS;
