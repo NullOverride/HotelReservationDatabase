@@ -1,20 +1,12 @@
-import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-
-import javax.activation.DataSource;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import java.awt.BorderLayout;
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
