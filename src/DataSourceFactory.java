@@ -6,9 +6,9 @@ public class DataSourceFactory {
     public static DataSource getMySQLDataSource(String uName, String pw) {
         
         MysqlDataSource mysqlDS = null;
-            mysqlDS = new MysqlDataSource();
-            mysqlDS.setUser(uName);
-            mysqlDS.setPassword(pw);
+        mysqlDS = new MysqlDataSource();
+        mysqlDS.setUser(uName);
+        mysqlDS.setPassword(pw);
         return mysqlDS;
       
     }
