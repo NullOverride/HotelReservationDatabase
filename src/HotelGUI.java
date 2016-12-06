@@ -7,12 +7,16 @@ import javax.swing.JTabbedPane;
 import com.mysql.jdbc.Statement;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.sql.DataSource;
 import javax.swing.JButton;
 import javax.swing.JTable;
+
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JScrollPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -48,7 +52,22 @@ public class HotelGUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		DataSource ds = DataSourceFactory.getMySQLDataSource();     
+		
+		initFrame init = new initFrame();
+		
+		Boolean wait = true;
+		while (wait) {
+			try {
+				if(init.getDS().equals(null)) {
+					//wait
+				} else {
+					wait = false;
+				}
+			} catch (Exception e) {
+				
+			}
+		}
+		DataSource ds = init.getDS();
 
 		try {
 			connection = ds.getConnection();

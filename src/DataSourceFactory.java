@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
  
 public class DataSourceFactory {
-    public static DataSource getMySQLDataSource() {
+    public static DataSource getMySQLDataSource(String uName, String pw) {
         
     	Properties props = new Properties();
         FileInputStream fis = null;
@@ -17,8 +17,8 @@ public class DataSourceFactory {
             props.load(fis);
             mysqlDS = new MysqlDataSource();
             mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
-            mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
-            mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
+            mysqlDS.setUser(uName);
+            mysqlDS.setPassword(pw);
         } catch (IOException e) {
         	System.out.println("db.properties is not found");
             e.printStackTrace();
