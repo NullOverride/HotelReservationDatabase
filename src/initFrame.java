@@ -36,7 +36,7 @@ public class initFrame extends JDialog {
 		lblNewLabel.setBounds(10, 42, 64, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
-		JLabel label = new JLabel("Username:");
+		JLabel label = new JLabel("Password:");
 		label.setBounds(10, 67, 64, 14);
 		frame.getContentPane().add(label);
 		
